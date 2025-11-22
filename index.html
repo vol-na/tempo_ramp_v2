@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>РАМПА</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preload" href="./fonts/museomoderno-v29-latin-200.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <p class="subtitle">метроном с плавной модуляцией темпа</p>           
+            <h1 class="title">rampa</h1>
+                        
+        </header>
+
+        <section class="controls">
+            <div class="control-row">
+                <span class="label">длительность/мин</span>
+              <div id="durationCircles" class="circle-group">
+                <button class="circle option" data-duration="1">1</button>
+                <button class="circle option" data-duration="3">3</button>
+                <button class="circle option active" data-duration="5">5</button>
+                <button class="circle option" data-duration="10">10</button>
+                <button class="circle option" data-duration="15">15</button>
+                <button class="circle option" data-duration="20">20</button>
+              </div>
+            </div>
+
+
+            <div class="control-row">
+                <span class="label">звук</span>
+                <div id="soundCircles" class="circle-group">
+                    <button class="circle option" data-sound="1">1</button>
+                    <button class="circle option" data-sound="2">2</button>
+                    <button class="circle option" data-sound="3">3</button>
+                    <!-- добавляем кнопки для дополнительных аудио файлов 4-7 -->
+                    <button class="circle option" data-sound="4">4</button>
+                    <button class="circle option" data-sound="5">5</button>
+                    <button class="circle option active" data-sound="6">6</button>
+                    <button class="circle option" data-sound="7">7</button>
+                </div>
+            </div>
+
+            <div class="control-row">
+              <span class="label">начальный / конечный bpm</span>
+              <div class="bpm-range">
+                <label class="bpm-field">
+                                    <input id="startBpmInput" type="number" min="10" max="200" step="1" value="120" />
+                </label>
+                <label class="bpm-field">
+                                  <input id="endBpmInput" type="number" min="10" max="200" step="1" value="80" />
+                </label>
+              </div>
+            </div>
+
+
+        </section>
+
+<!-- стек с SVG‑кольцом + дуга (рампа) -->
+        <section class="pulse-container">
+  <div class="pulse-wrap">
+    <div class="pulse-stack">
+      <svg class="pulse-ring" width="336" height="336" viewBox="0 0 336 336" aria-hidden="true">
+        <circle class="ring-bg" cx="168" cy="168" r="162"></circle>
+        <circle id="progressRing" class="ring-fg" cx="168" cy="168" r="162"></circle>
+      </svg>
+
+      <div id="pulse" class="pulse-circle">
+        <span id="pulseBpm" class="pulse-bpm">120</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SVG рампы, располагаем поверх пульса -->
+  <svg id="rampSvg" class="ramp-svg" viewBox="0 0 560 360" aria-hidden="true">
+    <!-- градиент для точек шкал и группы точек -->
+    <defs>
+      <radialGradient id="railDotGrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="white" />
+        <stop offset="60%" stop-color="rgba(255,255,255,0.3)" />
+        <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+      </radialGradient>
+
+      <!-- градиент заливки для ползунков: черный в центре, прозрачность к краям -->
+      <radialGradient id="knobGrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="black" stop-opacity="0.75" />
+        <stop offset="100%" stop-color="black" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <!-- вертикальные шкалы как группы точек -->
+    <g id="railL" class="ramp-rail-dots"></g>
+    <g id="railR" class="ramp-rail-dots"></g>
+
+
+    <!-- U‑кривая; будет обновляться скриптом -->
+    <path id="rampPath" class="ramp-path" d="" />
+
+    <!-- Прогресс по дуге: динамически заполняется скриптом -->
+    <path id="rampProgress" class="ramp-progress" d="" />
+    <!-- Ползунок‑указатель времени на дуге -->
+    <circle id="rampCursor" class="ramp-cursor" r="5" cx="0" cy="0" />
+
+    <!-- ползунки -->
+    <circle id="leftKnob"  class="ramp-knob"  cx="28"  cy="190" r="22" />
+    <circle id="rightKnob" class="ramp-knob"  cx="532" cy="190" r="22" />
+
+    <!-- подписи bpm у ползунков -->
+    <text id="leftLabel"  class="ramp-label"  x="28"  y="190">120</text>
+    <text id="rightLabel" class="ramp-label"  x="532" y="190">80</text>
+
+    <!-- деления шкалы (минимум/максимум) удалены -->
+  </svg>
+</section>
+
+
+        <section class="progress-container">
+            <!-- строка со временем и кнопками -->
+            <div class="progress-row">
+                <!-- Кнопка старт/пауза -->
+                <button id="toggleBtn" class="btn btn-icon" data-state="paused" aria-label="Старт">
+                    <span class="icon" aria-hidden="true">▶</span>
+                </button>
+                <!-- отображение времени -->
+                <div class="time-display">
+                    <span id="timeElapsed">00:00</span> / <span id="timeTotal">05:00</span>
+                </div>
+                <!-- Кнопка стоп -->
+                <button id="stopBtn" class="btn btn-icon" disabled aria-label="Стоп">
+                    <span class="icon" aria-hidden="true">↻</span>
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

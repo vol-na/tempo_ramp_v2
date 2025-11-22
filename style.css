@@ -1,0 +1,491 @@
+@font-face{
+  font-family:"MuseoModerno";
+  src:url("./fonts/museomoderno-v29-latin-200.woff2") format("woff2");
+  font-weight:200;
+  font-style:normal;
+  font-display:swap;
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:"MuseoModerno";
+  src:url("./fonts/museomoderno-v29-latin-100.woff2") format("woff2");
+  font-weight:100;
+  font-style:normal;
+  font-display:swap;
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Заголовки */
+h1,h1, h2, .title{
+  font-family:"MuseoModerno","Inter","Segoe UI",system-ui,sans-serif;
+  font-weight:100;       /* у вас есть 100 и 200 — используем реальный вес */
+  font-synthesis:none;   /* не давать браузеру «толстить» шрифт искусственно */
+  line-height:1.1;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Manrope', 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: radial-gradient(1000px 600px at 20% -10%, #2b2b2d 0%, #1f1f21 40%, #151517 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;      /* по центру по горизонтали */
+    justify-content: flex-start; /* прижали контент к верху */
+    padding-top: 24px;        /* небольшой отступ сверху, чтобы не прилипало */
+    color: #e7e7ea;
+}
+
+
+.container { background: transparent; padding: 24px 24px 32px; max-width: 560px; width: 100%; text-align: center; }
+
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;      /* расстояние над блоками настроек */
+}
+
+/* rampa */
+.title {
+  font-size: 64px;          
+  margin: -12px 0 15px 0;        
+}
+
+/* метроном с плавной… */
+.subtitle {
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: lowcase; /* uppercase при желании – сделает строку более «технической» */
+  letter-spacing: 0.12em;
+  line-height: 1.1; /* убираем лишний воздух вокруг строки */
+  margin: 0;
+  color: #a7a7ae;            /* как у label */
+  opacity: 0.5;
+}
+
+/* декоративная линия под заголовком — по желанию */
+/*.header::after {
+  content: "";
+  display: block;
+  width: 96px;
+  height: 1px;
+
+  margin: 24px auto 0;      /* расстояние до «длительность/мин» */
+  background: radial-gradient(circle, #ffffff 0, rgba(255,255,255,0) 70%);
+  opacity: 0.5;
+}*/
+
+
+.controls { margin: 12px 0 36px; }
+
+.control-group {
+    margin-bottom: 20px;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #4a5568;
+}
+
+.circle-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.label { color: #a7a7ae; font-size: 12px; letter-spacing: 0.12em; text-transform: lowercase; display: block; margin-bottom: 10px; }
+.control-row { margin-bottom: 18px; }
+.circle { width: 48px; height: 48px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.18); background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); color: #e7e7ea; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: .2s ease; user-select: none; }
+.circle:hover { border-color: rgba(255,255,255,0.35); }
+.circle.active { border-color: transparent; background: linear-gradient(135deg, #3b3b3f, #1f1f22); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); }
+
+/* поля ввода старт/финиш bpm */
+.bpm-range { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.bpm-field { display:flex; flex-direction:column; gap:6px; align-items:center; font-size:12px; color:#a7a7ae; }
+.bpm-field input{
+  width:88px; padding:10px 12px; border-radius:10px;
+  border:1px solid rgba(255,255,255,0.18);
+  background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  color:#e7e7ea; text-align:center; outline:none;
+}
+.bpm-field input:focus{ border-color:rgba(255,255,255,0.35); }
+
+
+.tempo-card {
+    margin-bottom: 25px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    border-radius: 15px;
+    border: 1px solid #e2e8f0;
+}
+
+.tempo-label {
+    display: block;
+    color: #718096;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+#currentBpm { 
+    font-family: 'TT Firs Neue', sans-serif;
+    font-size: 56px; 
+    line-height: 1; 
+    font-weight: 600; 
+    color: #e7e7ea; 
+    display: inline-block; 
+}
+
+.bpm-unit { font-size: 16px; color: #a7a7ae; margin-left: 6px; text-transform: lowercase; }
+
+.progress-container {
+    margin: -10px 0 30px;
+}
+
+.progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; margin-bottom: 1px; }
+
+.progress-fill { height: 100%; background: linear-gradient(90deg, #6a6a70, #44444a); width: 0%; transition: width 0.3s ease; }
+
+.time-display { color: #a7a7ae; font-size: 12px; font-weight: 500; text-transform: lowercase; }
+
+/* новая строка для времени и кнопок */
+.progress-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 26px;
+}
+
+/* кнопки со значками (старт/пауза и стоп) */
+/* .btn-icon теперь НЕ переопределяет фон/форму/размеры — всё берём из .btn */
+.btn-icon{
+  background: inherit;
+  border: none;
+  border-radius: inherit;
+  padding: 0;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+
+
+
+/* чтобы цвет иконок наследовался через currentColor */
+/* заливаем путь цветом, чтобы иконки были светлыми */
+.btn-icon .icon svg path {
+    fill: #f1f1f3;
+}
+
+.btn-icon:hover:not(:disabled) {
+    background: rgba(255,255,255,0.05);
+}
+
+.btn-icon:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    font-family: 'TT Firs Text', sans-serif;
+    /* круглая большая клик-зона */
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    padding: 0;
+    border-radius: 999px;
+
+    /* по умолчанию: «глухой чёрный», без границ и теней */
+    background: #151517;      /* цвет фона страницы внизу градиента */
+    border: none;
+    box-shadow: none;
+
+    /* центрируем иконку */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* иконка внутри круглой кнопки */
+.btn .icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1;
+  font-size:20px;      /* размер ▶ / ❚❚ / ↻ */
+  color:#c9c9cf;       /* цвет иконки */
+}
+
+.btn .icon svg{
+  width:20px;
+  height:20px;
+  fill:currentColor;
+}
+
+/* одинаковая «невидимость» для обоих типов по умолчанию */
+.btn-primary,
+.btn-secondary {
+    background: #151517; /* тот же глухой чёрный */
+    color: #c9c9cf;      /* цвет иконки/символа */
+    border: none;
+}
+
+/* эффект только при наведении/фокусе/табе/нажатии: подсветка как сейчас */
+.btn:hover:not(:disabled),
+.btn:focus-visible:not(:disabled),
+.btn:active:not(:disabled) {
+    background: linear-gradient(135deg, #3b3b3f, #1f1f22);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+    outline: none;
+}
+
+
+.btn:disabled {
+    opacity: 0.5;          /* приглушаем иконку */
+    cursor: not-allowed;
+    transform: none !important;
+    background: #151517;   /* остаётся «растворённой» */
+    box-shadow: none;
+}
+
+
+
+.pulse-wrap { display:flex; justify-content:center; margin:24px 0 12px; }  /* круг-пульс */
+         
+.pulse-circle{
+  width:320px; height:320px; margin:0 auto; position:relative; border-radius:50%;
+  /* без рамок и теней */
+  border:none; box-shadow:none; background-color:#222326;
+
+  /* «шар» */
+  background-image:
+    radial-gradient(160px 160px at 50% 44%,
+      rgba(255,255,255,0.26) 0%,
+      rgba(255,255,255,0.16) 24%,
+      rgba(255,255,255,0.10) 46%,
+      rgba(255,255,255,0.06) 66%,
+      rgba(255,255,255,0.03) 82%,
+      rgba(255,255,255,0.015) 92%,
+      rgba(255,255,255,0.00) 100%),
+    radial-gradient(closest-side at 50% 50%,
+      rgba(0,0,0,0.00) 0%,
+      rgba(0,0,0,0.08) 70%,
+      rgba(0,0,0,0.16) 100%);
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+
+
+.pulse-bpm {            /* цифры на круге */
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:"MuseoModerno","Inter","Segoe UI",system-ui,sans-serif;
+  font-weight:100;           /* тонкий вес */
+  font-synthesis:none;       /* без «искусственного» bold */
+  font-size:72px;            /* размер можно подогнать */
+  line-height:1;
+  color:#fff;
+  text-shadow:0 2px 6px rgba(0,0,0,0.3);
+  pointer-events:none;
+}
+
+/* привязка анимации к активному состоянию: одиночный «удар» на каждый тик */
+/*
+  Пульс анимирует круг при каждом тике. Используем отдельные ключевые
+  кадры и не задаём длительность в CSS – её устанавливает скрипт
+  (animation-duration inline), чтобы затухание совпадало с интервалом
+  между звуками. Анимация чуть увеличивает круг и даёт мягкое
+  свечение, которое постепенно исчезает.
+*/
+@keyframes pulse {
+  /* старт: обычный размер, без свечения */
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255,255,255,0);
+  }
+  /* пик: круг увеличивается и появляется мягкое свечение */
+  20% {
+    /* пик пульса: чуть сильнее увеличение и более заметное свечение */
+    transform: scale(1.12);
+    box-shadow: 0 0 25px 12px rgba(255,255,255,0.25);
+  }
+  /* затухание: возвращаемся к исходному состоянию */
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255,255,255,0);
+  }
+}
+
+/*
+  Запуск анимации пульса для круга. Длительность и количество
+  итераций задаются скриптом; здесь определяем только имя анимации,
+  её плавность и сохранение конечного состояния. Это позволяет
+  динамически менять продолжительность каждого пульса.
+*/
+.pulse-circle.active {
+  animation-name: pulse;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+}
+
+
+.pulse-stack { position: relative; width:336px; height:336px; margin:0 auto; }
+.pulse-ring  { position:absolute; inset:0; transform: rotate(-90deg); }
+.ring-bg { fill:none; stroke:rgba(255,255,255,0.08); stroke-width:4; }
+.ring-fg { fill:none; stroke:rgba(255,255,255,0.55); stroke-width:4; stroke-linecap:round; }
+
+/* пульс уже стилизован; важно чтобы он был ровно 320×320 внутри стека */
+.pulse-circle { position:absolute; top:8px; left:8px; width:320px; height:320px; border-radius:50%; }
+
+/* --- RAMP overlay --- */
+/* Контейнер для пульса и кривой: делаем относительный контейнер, чтобы разместить svg поверх круга. */
+.pulse-container {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto 1px;
+    height: 400px; /* высота включает круг (320px) и место для дуги */
+}
+
+/* SVG рампы позиционируется абсолютно в пределах контейнера */
+.ramp-svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /* Не отключаем полностью pointer-events: svg принимает события, но отдельные элементы контролируются отдельно */
+    z-index: 2;
+}
+
+/* стили линий, кривой, ползунков */
+.ramp-rail {
+    stroke: rgba(255,255,255,0.18);
+    stroke-width: 4;
+    stroke-linecap: round;
+    pointer-events: none; /* рейки не перехватывают события */
+}
+
+/* точки на вертикальных рейках: маленькие круги с радиальным градиентом */
+.ramp-rail-dots circle {
+    fill: url(#railDotGrad);
+    /* диаметр точки 4px (радиус 2) соответствует толщине прежней линии */
+    r: 2;
+    pointer-events: none;
+}
+.ramp-progress {
+    fill: none;
+    /* цвет прогресса на кривой: чуть ярче базовой дуги */
+    stroke: rgba(255, 255, 255, 1.0);
+    stroke-width: 6px;
+    stroke-linecap: round;
+    pointer-events: none;
+    /* небольшая тень, чтобы выделить прогресс на фоне базовой дуги */
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.5));
+}
+
+/* круг‑указатель времени на дуге */
+.ramp-cursor {
+    fill: #ffffff;
+    stroke: rgba(255,255,255,0.35);
+    stroke-width: 1px;
+    pointer-events: none;
+    filter: drop-shadow(0 0 6px rgba(255,255,255,0.55));
+}
+.ramp-path {
+    fill: none;
+    stroke: rgba(255,255,255,0.75);
+    stroke-width: 6;
+    stroke-linecap: round;
+    pointer-events: none; /* кривая не перехватывает события */
+}
+.ramp-knob {
+    /* заливка чёрным градиентом: непрозрачный центр и прозрачные края */
+    fill: url(#knobGrad);
+    stroke: rgba(255,255,255,0.28);
+    stroke-width: 1.5;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+    cursor: grab;
+    pointer-events: auto; /* разрешаем перетаскивать кружки */
+}
+.ramp-knob:active {
+    cursor: grabbing;
+}
+.ramp-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    fill: #fff;
+    pointer-events: none;
+}
+.ramp-scale {
+    font-size: 12px;
+    font-weight: 600;
+    fill: rgba(255,255,255,0.75);
+    pointer-events: none;
+}
+
+/* скрываем ряд ввода начального/конечного bpm */
+.controls .control-row:nth-of-type(3) {
+    display: none;
+}
+
+/* скрываем кольцевой прогресс вокруг пульс-круга */
+.ring-fg {
+    display: none;
+}
+
+/* убираем статичную линию-обводку вокруг пульс‑круга */
+.ring-bg {
+    display: none;
+}
+
+/* полностью скрываем svg‑контейнер кольца, чтобы не было обводки вокруг круга */
+.pulse-ring {
+    display: none;
+}
+
+
+/* Адаптивность */
+@media (max-width: 600px) {
+    .container {
+        padding: 30px 20px;
+    }
+    
+    .header .title {
+        font-size: 2rem;
+        font-weight: 300;  
+        letter-spacing: 0.05em; /* чуть разреженный */
+        text-transform: uppercase;
+        margin: -8px 0 1px 0;  /* вместо -12px */
+    }
+    
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 200px;
+    }
+}
