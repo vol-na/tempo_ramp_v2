@@ -1,3 +1,5 @@
+/* версия 12 с кнопками i и tg ЕЩЕ РАЗ */
+
 @font-face{
   font-family:"MuseoModerno";
   src:url("./fonts/museomoderno-v29-latin-200.woff2") format("woff2");
@@ -54,17 +56,19 @@ body {
 
 /* rampa */
 .title {
-  font-size: 64px;          
-  margin: -12px 0 15px 0;        
+  font-size: 64px;  
+  line-height: 1;        
+  margin: 0 0 15px 0;
+  text-transform: lowercase;        
 }
 
 /* метроном с плавной… */
 .subtitle {
   font-size: 12px;
   font-weight: 400;
-  text-transform: lowcase; /* uppercase при желании – сделает строку более «технической» */
+  text-transform: lowercase; /* uppercase при желании – сделает строку более «технической» */
   letter-spacing: 0.12em;
-  line-height: 1.1; /* убираем лишний воздух вокруг строки */
+  line-height: 0; /* убираем лишний воздух вокруг строки */
   margin: 0;
   color: #a7a7ae;            /* как у label */
   opacity: 0.5;
@@ -97,7 +101,30 @@ body {
 }
 
 .circle-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-.label { color: #a7a7ae; font-size: 12px; letter-spacing: 0.12em; text-transform: lowercase; display: block; margin-bottom: 10px; }
+
+/* единый стиль для подписи блоков, времени и нижней строки */
+.label,
+.time-display,
+.progress-row {
+  font-family: 'Manrope', 'Segoe UI', Helvetica, Arial, sans-serif;
+  color: #a7a7ae;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+}
+
+/* доп. настройки только для подписи и времени */
+.label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.time-display {
+  white-space: nowrap;
+}
+
+
 .control-row { margin-bottom: 18px; }
 .circle { width: 48px; height: 48px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.18); background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); color: #e7e7ea; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: .2s ease; user-select: none; }
 .circle:hover { border-color: rgba(255,255,255,0.35); }
@@ -142,14 +169,13 @@ body {
 .bpm-unit { font-size: 16px; color: #a7a7ae; margin-left: 6px; text-transform: lowercase; }
 
 .progress-container {
-    margin: -10px 0 30px;
+    margin: 0 0 30px;
 }
 
 .progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; margin-bottom: 1px; }
 
 .progress-fill { height: 100%; background: linear-gradient(90deg, #6a6a70, #44444a); width: 0%; transition: width 0.3s ease; }
 
-.time-display { color: #a7a7ae; font-size: 12px; font-weight: 500; text-transform: lowercase; }
 
 /* новая строка для времени и кнопок */
 .progress-row {
@@ -174,13 +200,12 @@ body {
 }
 
 
-
-
 /* чтобы цвет иконок наследовался через currentColor */
 /* заливаем путь цветом, чтобы иконки были светлыми */
 .btn-icon .icon svg path {
     fill: #f1f1f3;
 }
+
 
 .btn-icon:hover:not(:disabled) {
     background: rgba(255,255,255,0.05);
@@ -233,6 +258,21 @@ body {
   color:#c9c9cf;       /* цвет иконки */
 }
 
+#infoBtn,
+#tgBtn {
+  font-family: inherit;
+  font-size: inherit;        /* 12px из .progress-row */
+  font-weight: inherit;      /* 500 из .progress-row */
+  letter-spacing: inherit;   /* 0.12em из .progress-row */
+  text-transform: inherit;   /* lowercase из .progress-row */
+}
+
+
+#infoBtn .icon,
+#tgBtn .icon {
+   font-size: 1em;
+}
+
 .btn .icon svg{
   width:20px;
   height:20px;
@@ -267,7 +307,7 @@ body {
 
 
 
-.pulse-wrap { display:flex; justify-content:center; margin:24px 0 12px; }  /* круг-пульс */
+.pulse-wrap { display:flex; justify-content:center; margin:24px 0 0; }  /* круг-пульс */
          
 .pulse-circle{
   width:320px; height:320px; margin:0 auto; position:relative; border-radius:50%;
@@ -464,28 +504,105 @@ body {
     display: none;
 }
 
+.progress-row {
+    margin-top: 0px; /* подбери число: 0–12px, пока не понравится визуально */
+}
+
 
 /* Адаптивность */
 @media (max-width: 600px) {
-    .container {
-        padding: 30px 20px;
-    }
-    
-    .header .title {
-        font-size: 2rem;
-        font-weight: 300;  
-        letter-spacing: 0.05em; /* чуть разреженный */
-        text-transform: uppercase;
-        margin: -8px 0 1px 0;  /* вместо -12px */
-    }
-    
-    .buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .btn {
-        width: 100%;
-        max-width: 200px;
-    }
+  body {
+    padding-top: 16px;
+  }
+  .container{
+    padding: 16px 16px 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    justify-content: flex-start;
+  }
+  .header{
+    margin-bottom: clamp(12px, 3vh, 24px);
+  }
+  .header .title {
+    font-size: 3rem;
+    font-weight: 100;
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+    margin: 0 0 12px 0;
+    line-height: 1;
+  }
+  .subtitle {
+    line-height: 0;
+  }
+  .controls {
+    margin: 8px 0 12px;
+  }
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  .circle-group{
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .circle{
+    width: 42px;
+    height: 42px;
+    flex: 0 0 auto;
+  }
+  .pulse-container{
+    max-width: 360px;
+    height: 320px;
+    margin: 0 auto 0;
+    position: relative;
+  }
+  .pulse-stack{
+    width: 260px;
+    height: 260px;
+  }
+  .pulse-circle{
+    top: 8px;
+    left: 8px;
+    width: 244px;
+    height: 244px;
+  }
+  .pulse-wrap{
+    margin: 0;
+  }
+  .pulse-bpm{
+    font-size: 72px;
+  }
+  .progress-container{
+        margin: 0 0 0;
+  }
+  .progress-row{
+    margin-top: 0;
+    gap: 8px;          /* общий gap поменьше */
+  }
+  #toggleBtn{
+    margin-right: 12px; /* 14 + 12 = 26 между стартом и временем */
+  }
+  #stopBtn{
+    margin-left: 12px;  /* 14 + 12 = 26 между временем и ресетом */
+  }
 }
+
+/* маленькая высота — слегка подтягиваем время к кривой */
+@media (max-width: 600px) and (max-height: 800px) {
+  .progress-container{
+    margin-top: -16px;
+  }
+}
+
+/* ещё меньше высота — ещё сильнее подтягиваем */
+@media (max-width: 600px) and (max-height: 720px) {
+  .progress-container{
+    margin-top: -28px;
+  }
+}
+
+
+
+

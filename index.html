@@ -1,3 +1,4 @@
+<!  версия 12 >
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -126,19 +127,32 @@
         <section class="progress-container">
             <!-- строка со временем и кнопками -->
             <div class="progress-row">
-                <!-- Кнопка старт/пауза -->
-                <button id="toggleBtn" class="btn btn-icon" data-state="paused" aria-label="Старт">
-                    <span class="icon" aria-hidden="true">▶</span>
-                </button>
-                <!-- отображение времени -->
-                <div class="time-display">
-                    <span id="timeElapsed">00:00</span> / <span id="timeTotal">05:00</span>
-                </div>
-                <!-- Кнопка стоп -->
-                <button id="stopBtn" class="btn btn-icon" disabled aria-label="Стоп">
-                    <span class="icon" aria-hidden="true">↻</span>
-                </button>
-            </div>
+    <!-- слева: кнопка "i" -->
+    <button id="infoBtn" class="btn btn-icon" type="button" aria-label="Информация">
+        <span class="icon" aria-hidden="true">i</span>
+    </button>
+
+    <!-- Кнопка старт/пауза -->
+    <button id="toggleBtn" class="btn btn-icon" data-state="paused" type="button" aria-label="Старт">
+        <span class="icon" aria-hidden="true">▶</span>
+    </button>
+
+    <!-- отображение времени -->
+    <div class="time-display">
+        <span id="timeElapsed">00:00</span> / <span id="timeTotal">05:00</span>
+    </div>
+
+    <!-- Кнопка стоп -->
+    <button id="stopBtn" class="btn btn-icon" type="button" disabled aria-label="Стоп">
+        <span class="icon" aria-hidden="true">↻</span>
+    </button>
+
+    <!-- справа: иконка телеграма -->
+    <button id="tgBtn" class="btn btn-icon" type="button" aria-label="Открыть Telegram">
+        <span class="icon" aria-hidden="true">tg</span>
+    </button>
+</div>
+
         </section>
     </div>
 

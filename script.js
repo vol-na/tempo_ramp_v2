@@ -11,7 +11,7 @@ class RhythmMeditator {
         this.selectedSound = 6;       // выбранный звук (1, 2 или 3)
         this.minBpm = 10;             // минимальный BPM, на который спускается кривая и звук
         this.holdFrac = 0.15;         // доля плато на минимуме (15%)
-        this.soundGain = { 1: 2.00, 2: 1.10, 3: 1.00, 4: 1.00, 5: 1.00, 6: 1.00, 7: 1.00 };
+        this.soundGain = { 1: 3.00, 2: 1.00, 3: 1.00, 4: 1.00, 5: 1.00, 6: 1.00, 7: 1.00 };
 
         // --- инициализация элементов DOM ---
         this.initializeElements();
@@ -103,6 +103,10 @@ this.mp3Offset = 0.02; // 20 мс – безопасное смещение ст
         this.startBpmInput     = document.getElementById('startBpmInput');
         this.endBpmInput       = document.getElementById('endBpmInput');
 
+        this.infoBtn = document.getElementById('infoBtn'); // кнопка i в нижней строке
+        this.tgBtn   = document.getElementById('tgBtn');  // кнопка tg в нижней строке
+
+
         // элементы рампы
         this.rampSvg    = document.getElementById('rampSvg');
         this.rampPath   = document.getElementById('rampPath');
@@ -152,6 +156,20 @@ this.mp3Offset = 0.02; // 20 мс – безопасное смещение ст
             });
         }
         if (this.stopBtn)  this.stopBtn.addEventListener('click',  () => this.stop());
+
+        // кнопка "i"
+        if (this.infoBtn) {
+            this.infoBtn.addEventListener('click', () => {
+                window.open('https://example.com/info', '_blank');
+            });
+        }
+
+        // кнопка "tg"
+        if (this.tgBtn) {
+            this.tgBtn.addEventListener('click', () => {
+                window.open('https://t.me/volodina_natascia', '_blank');
+            });
+        }
 
         // поля ввода bpm
         const clamp = (v) => {
