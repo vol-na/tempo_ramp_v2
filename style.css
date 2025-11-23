@@ -574,9 +574,12 @@ body {
   .pulse-bpm{
     font-size: 72px;
   }
-  .progress-container{
-        margin: 0 0 0;
+    .progress-container{ 
+    /* зазор между U-кривой и временем:
+       чем меньше высота экрана, тем сильнее подтягиваем строку вверх */
+    margin-top: clamp(-24px, calc(2vh - 28px), 4px);
   }
+
   .progress-row{
     margin-top: 0;
     gap: 8px;          /* общий gap поменьше */
@@ -589,19 +592,7 @@ body {
   }
 }
 
-/* маленькая высота — слегка подтягиваем время к кривой */
-@media (max-width: 600px) and (max-height: 800px) {
-  .progress-container{
-    margin-top: -16px;
-  }
-}
 
-/* ещё меньше высота — ещё сильнее подтягиваем */
-@media (max-width: 600px) and (max-height: 720px) {
-  .progress-container{
-    margin-top: -28px;
-  }
-}
 
 
 
