@@ -44,7 +44,23 @@ body {
 }
 
 
-.container { background: transparent; padding: 24px 24px 32px; max-width: 560px; width: 100%; text-align: center; }
+.container { background: transparent; padding: 24px 24px 32px; max-width: 560px; width: 100%; text-align: center;   
+  min-height: 100dvh;  /* контейнер растягивается на высоту окна */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* верхний блок прижат к верху, нижний — к низу, между ними «резинка» */
+}
+
+.top-block{
+  display: flex;
+  flex-direction: column;
+}
+
+.bottom-block{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;          /* расстояние между U-кривой и нижней строкой с кнопками */
+}
 
 
 .header {
@@ -514,13 +530,16 @@ body {
   body {
     padding-top: 16px;
   }
-  .container{
+    .container{
     padding: 16px 16px 20px;
+    max-width: 560px;
+    width: 100%;
+    min-height: 100dvh;         /* та же идея: растягиваем контейнер на высоту окна */
     display: flex;
     flex-direction: column;
-    min-height: auto;
-    justify-content: flex-start;
+    justify-content: space-between; /* верх/низ фиксированы, середина «дышит» */
   }
+
   .header{
     margin-bottom: clamp(12px, 3vh, 24px);
   }
@@ -574,11 +593,10 @@ body {
   .pulse-bpm{
     font-size: 72px;
   }
-    .progress-container{ 
-    /* зазор между U-кривой и временем:
-       чем меньше высота экрана, тем сильнее подтягиваем строку вверх */
-    margin-top: clamp(-24px, calc(2vh - 28px), 4px);
+      .progress-container{
+    margin-top: 0;              /* фиксированное прилегание к U-кривой */
   }
+
 
   .progress-row{
     margin-top: 0;
