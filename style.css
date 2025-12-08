@@ -1,4 +1,4 @@
-/* версия 12 с кнопками i и tg ЕЩЕ РАЗ */
+/* версия 13 */
 
 @font-face{
   font-family:"MuseoModerno";
@@ -17,7 +17,7 @@
   unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* Заголовки */
-h1,h1, h2, .title{
+h1, h2, .title{
   font-family:"MuseoModerno","Inter","Segoe UI",system-ui,sans-serif;
   font-weight:100;       /* у вас есть 100 и 200 — используем реальный вес */
   font-synthesis:none;   /* не давать браузеру «толстить» шрифт искусственно */
@@ -31,24 +31,30 @@ h1,h1, h2, .title{
     box-sizing: border-box;
 }
 
+
 body {
     font-family: 'Manrope', 'Segoe UI', Helvetica, Arial, sans-serif;
     background: radial-gradient(1000px 600px at 20% -10%, #2b2b2d 0%, #1f1f21 40%, #151517 100%);
-    min-height: 100vh;
+    /* Используем минимальный высотный юнит для корректной работы на мобильных
+       устройствах (dvh учитывает динамические панели в браузерах),
+       сохраняем выравнивание как было */
+    height: 100dvh;
     display: flex;
     flex-direction: column;
-    align-items: center;      /* по центру по горизонтали */
+    align-items: center;         /* по центру по горизонтали */
     justify-content: flex-start; /* прижали контент к верху */
-    padding-top: 24px;        /* небольшой отступ сверху, чтобы не прилипало */
+    padding-top: 0;              /* весь отступ сверху переедет в .container */
     color: #e7e7ea;
 }
 
 
 .container { background: transparent; padding: 24px 24px 32px; max-width: 560px; width: 100%; text-align: center;   
-  min-height: 100dvh;  /* контейнер растягивается на высоту окна */
+  /* минимальная высота равна высоте родителя для образования гибкого зазора.
+     padding-top и padding-bottom дают небольшие поля сверху и снизу даже на мобильных */
+  min-height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* верхний блок прижат к верху, нижний — к низу, между ними «резинка» */
+  justify-content: flex-start;
 }
 
 .top-block{
@@ -59,7 +65,11 @@ body {
 .bottom-block{
   display: flex;
   flex-direction: column;
-  gap: 12px;          /* расстояние между U-кривой и нижней строкой с кнопками */
+  gap: 12px;             /* расстояние между U-кривой и нижней строкой с кнопками */
+  /* заполняем свободное пространство между верхним и нижним блоками */
+  margin-top: auto;
+  /* небольшой нижний отступ, чтобы блок не прилипал к краю экрана */
+  margin-bottom: 0;
 }
 
 
@@ -185,7 +195,7 @@ body {
 .bpm-unit { font-size: 16px; color: #a7a7ae; margin-left: 6px; text-transform: lowercase; }
 
 .progress-container {
-    margin: 0 0 30px;
+    margin: 0; /* снизу остаётся только padding контейнера */
 }
 
 .progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; margin-bottom: 1px; }
@@ -527,21 +537,34 @@ body {
 
 /* Адаптивность */
 @media (max-width: 600px) {
-  body {
-    padding-top: 16px;
+
+  /* на мобильных разрешаем прокрутку по вертикали (горизонтальная скрыта),
+     чтобы содержимое не обрезалось из‑за скрытия панели адреса */
+  html, body{
+    overflow-x: hidden;
+    overflow-y: auto;
   }
-    .container{
-    padding: 16px 16px 20px;
+  .container{
+    /* уменьшаем горизонтальные отступы и даём небольшие поля сверху/снизу */
+    padding: 32px 12px 16px;
     max-width: 560px;
     width: 100%;
-    min-height: 100dvh;         /* та же идея: растягиваем контейнер на высоту окна */
+    /* растягиваем контейнер на всю видимую высоту, сохраняя отступы */
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* верх/низ фиксированы, середина «дышит» */
+    /* выравнивание по верху – расстояние между блоками тянется за счёт margin-top:auto */
+    justify-content: flex-start;
+  }
+
+  .bottom-block{
+    /* добавляем небольшой нижний отступ на мобильных, чтобы блок не прилипал к краю */
+    margin-bottom: 12px;
   }
 
   .header{
-    margin-bottom: clamp(12px, 3vh, 24px);
+    /* сократим отступы над блоком настроек на мобильных */
+    margin-bottom: clamp(12px, 4vh, 20px);
   }
   .header .title {
     font-size: 3rem;
@@ -573,28 +596,28 @@ body {
   }
   .pulse-container{
     max-width: 360px;
-    height: 320px;
+    height: 300px;
     margin: 0 auto 0;
     position: relative;
   }
   .pulse-stack{
-    width: 260px;
-    height: 260px;
+    width: 240px;
+    height: 240px;
   }
   .pulse-circle{
     top: 8px;
     left: 8px;
-    width: 244px;
-    height: 244px;
+    width: 224px;
+    height: 224px;
   }
   .pulse-wrap{
     margin: 0;
   }
   .pulse-bpm{
-    font-size: 72px;
+    font-size: 64px;
   }
-      .progress-container{
-    margin-top: 0;              /* фиксированное прилегание к U-кривой */
+  .progress-container{
+    margin: 0;              /* фиксированное прилегание к U-кривой */
   }
 
 
@@ -608,6 +631,7 @@ body {
   #stopBtn{
     margin-left: 12px;  /* 14 + 12 = 26 между временем и ресетом */
   }
+
 }
 
 
